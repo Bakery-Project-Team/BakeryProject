@@ -1,10 +1,10 @@
 export class UserUpgradeStatements {
     userUpgrades = [
         {
-        toVersion: 1,
+        toVersion: 2,
         statements: [
-            `PRAGMA foreign_keys = ON;
-            CREATE TABLE IF NOT EXISTS customers(
+            `PRAGMA foreign_keys = ON;`,
+            `CREATE TABLE IF NOT EXISTS customers(
             id INTEGER PRIMARY KEY,
             areaNo INTEGER NOT NULL,
             lastInvoiceDate NOT NULL,

@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Invoice#{{ invoice.invoiceNo }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Billing Section -->
+  <ion-card>
+    <ion-card-content>
+      <div class="header-row">
+        <span><b>Billing</b></span>
+        <ion-badge color="warning">{{ invoice.generate === 'Y' ? 'Delivered' : 'To be delivered' }}</ion-badge>
+      </div>
+
+      <h2>{{ invoice.company }}</h2>
+
+      <!-- Issue & Due Date Section -->
+      <div class="date-section">
+        <div>
+          <p><b>Issued</b></p>
+          <p>{{ invoice.invoiceDate }}</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+   <!-- Scrollable Items List -->
+   <div class="items-list">
+    <ion-card>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col><b>Item</b></ion-col>
+            <ion-col><b>QTY</b></ion-col>
+            <ion-col><b>Price</b></ion-col>
+          </ion-row>
+          <ion-row *ngFor="let item of items">
+            <ion-col>{{ item.itemNo }}</ion-col>
+            <ion-col>{{ item.quantity }}</ion-col>
+            <ion-col>${{ item.price.toFixed(2) }}</ion-col>
+          </ion-row>
+        </ion-grid>
+
+
+        <ion-grid>
+          <ion-row>
+            <ion-col><b>Total</b></ion-col>
+            <ion-col></ion-col>
+            <ion-col>${{ invoice.totalItems.toFixed(2) }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col><b>Tax</b></ion-col>
+            <ion-col></ion-col>
+            <ion-col>${{ 0 }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col><b>Amount Due</b></ion-col>
+            <ion-col></ion-col>
+            <ion-col>${{ invoice.totalItems.toFixed(2) }}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="full" color="success" (click)="confirmDelivery()">
+              Confirm Delivery
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button expand="full" color="warning" (click)="handleReturnOrDiscrepancy()">
+              Return / Discrepancy
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

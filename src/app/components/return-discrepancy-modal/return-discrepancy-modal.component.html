@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Invoice#{{ invoice.invoiceNo }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Select Type Dropdown -->
+  <!-- Select Type & Add Item in a Single Row -->
+<ion-grid>
+  <ion-row>
+    <ion-col size="8"> <!-- Dropdown takes 8/12 of the row -->
+      <ion-item>
+        <ion-label><b>Select Type</b></ion-label>
+        <ion-select [(ngModel)]="selectedType">
+          <ion-select-option value="return">Return</ion-select-option>
+          <ion-select-option value="discrepancy">Discrepancy</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+    <ion-col size="4" class="align-right"> <!-- Button takes 4/12 -->
+      <ion-button expand="full" color="dark" (click)="addItem()">Add Item</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+
+  <!-- Item List -->
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col><b>Item</b></ion-col>
+          <ion-col><b>Qty</b></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of items">
+          <ion-col>{{ item.name }}</ion-col>
+          <ion-col>
+            <ion-input type="number" [(ngModel)]="item.quantity"></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+<!-- Bottom Action Button -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="full" color="dark" (click)="postChange()">Post Change</ion-button>
+  </ion-toolbar>
+</ion-footer>

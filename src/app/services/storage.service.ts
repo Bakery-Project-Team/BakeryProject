@@ -7,6 +7,8 @@ import { Customer } from '../models/customer';
 import { InvoiceItem } from '../models/invoice_item';
 import { Invoice } from '../models/invoice';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DataService } from './data.service';
+import { Toast } from '@capacitor/toast';
 
 @Injectable()
 export class StorageService {
@@ -188,11 +190,11 @@ export class StorageService {
             if (result.length > 0) {
                 return result;
             } else {
-                return null;
+                return [];
             }
         } catch (erorr) {
             console.log("Error");
-            return -999;
+            return [];
         }
     }
 
@@ -337,5 +339,30 @@ export class StorageService {
             console.log("Error updating status ...");
         }
     }
+    
+    async getInvoices(): Promise<Record<string, any>[]> {
+        try {
+            const result = await this.db.query(`
+                SELECT i.*, c.company 
+                FROM invoices i
+                JOIN customers c ON i.custNo = c.id;
+            `);
+    
+            return result.values ?? []; // ✅ Ensure result.values is always an array
+        } catch (error) {
+            console.error("Error querying invoices:", error);
+            return []; // ✅ Return an empty array on failure
+        }
+    }
+
+    async isDatabaseEmpty(): Promise<boolean> {
+        const invoices = await this.getInvoices()
+        if (invoices.length == 0) {
+            return true
+        }
+        return false
+    }
+
+    
 
 }

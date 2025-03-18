@@ -3,31 +3,32 @@
     <ion-toolbar>
       <ion-title>Invoice Management</ion-title>
     </ion-toolbar>
-  </ion-header>
+</ion-header>
   
-  <ion-content [fullscreen]="true">
-    
-    <ion-grid>
-      <ion-row class="summary">
-        <ion-col class="summary-item">
-          <p>Delivered</p>
-          <h3>12</h3>
-        </ion-col>
-        <ion-col class="summary-item">
-          <p>To be delivered</p>
-          <h3>3</h3>
-        </ion-col>
-        <ion-col class="summary-item">
-          <p>Returns</p>
-          <h3>2</h3>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-content class="ion-padding">
+        <!-- Summary Bar -->
+        <ion-card>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col class="summary-item">
+                  <ion-badge color="success">Delivered: {{ deliveredCount }}</ion-badge>
+                </ion-col>
+                <ion-col class="summary-item">
+                  <ion-badge color="warning">To be Delivered: {{ undeliveredCount }}</ion-badge>
+                </ion-col>
+                <ion-col class="summary-item">
+                    <ion-badge color="warning">Returns: {{ returnsCount }}</ion-badge>
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+    </ion-card>
   
     <!-- Search Bar with Dropdown -->
     <div class="search-container">
-      <ion-searchbar placeholder="Search"></ion-searchbar>
-      <ion-button fill="clear" id="filter-button" class="small-button" (click)="toggleDropDown()">
+        <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterInvoices($event)"></ion-searchbar>
+        <ion-button fill="clear" id="filter-button" class="small-button" (click)="toggleDropDown()">
         <ion-icon name="chevron-down"></ion-icon>
       </ion-button>
     </div>
@@ -39,84 +40,46 @@
   
     <!-- Invoice List -->
     <ion-list>
-      <ion-card class="invoice-card">
-        <ion-card-content>
-          <h3>Company 1</h3>
-          <ion-grid>
-            <ion-row>
-              <ion-col><b>Amt</b><br>$2000.00</ion-col>
-              <ion-col><b>No</b><br>45462</ion-col>
-              <ion-col><b>Date</b><br>20/05/2025</ion-col>
-            </ion-row>
-          </ion-grid>
-          <ion-button color="success">Delivered</ion-button>
-        </ion-card-content>
-      </ion-card>
-  
-      <ion-card class="invoice-card">
-        <ion-card-content>
-          <h3>Company 1</h3>
-          <ion-grid>
-            <ion-row>
-              <ion-col><b>Amt</b><br>$2000.00</ion-col>
-              <ion-col><b>No</b><br>45462</ion-col>
-              <ion-col><b>Date</b><br>20/07/2025</ion-col>
-            </ion-row>
-          </ion-grid>
-          <ion-button color="warning">To be delivered</ion-button>
-        </ion-card-content>
-      </ion-card>
-  
-      <ion-card class="invoice-card">
-        <ion-card-content>
-          <h3>Company 1</h3>
-          <ion-grid>
-            <ion-row>
-              <ion-col><b>Amt</b><br>$2000.00</ion-col>
-              <ion-col><b>No</b><br>45462</ion-col>
-              <ion-col><b>Date</b><br>30/01/2026</ion-col>
-            </ion-row>
-          </ion-grid>
-          <ion-button color="warning">To be delivered</ion-button>
-        </ion-card-content>
-      </ion-card>
+        <ion-card class="invoice-card" *ngFor="let invoice of filteredInvoices" (click)="openInvoiceDetails(invoice)">
+          <ion-card-content>
+            <h3>{{ invoice.company }}</h3>
+            <ion-grid>
+              <ion-row>
+                <ion-col><b>Amt</b><br>${{ invoice.totalItems }}</ion-col>
+                <ion-col><b>No</b><br>{{ invoice.invoiceNo }}</ion-col>
+                <ion-col><b>Date</b><br>{{ invoice.invoiceDate }}</ion-col>
+              </ion-row>
+            </ion-grid>
+            <ion-button [color]="invoice.generate === 'Y' ? 'success' : 'warning'">
+              {{ invoice.generate }}
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
     </ion-list>
-  
+      
   </ion-content>
   
   <!-- Bottom Navigation -->
   <ion-footer>
-    <ion-toolbar>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-button fill="clear">
-              <ion-icon name="person-circle"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button fill="clear">
-              <ion-icon name="sync"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button fill="clear">
-              <ion-icon name="home"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button fill="clear">
-              <ion-icon name="cloud-download"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button fill="clear">
-              <ion-icon name="settings"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-toolbar>
+    <div class="bottom-navbar">
+      <ion-tab-bar>
+        <ion-tab-button>
+          <ion-icon name="person-outline"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button>
+          <ion-icon name="refresh-outline"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button>
+          <ion-icon name="home-outline"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button>
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button>
+          <ion-icon name="settings-outline"></ion-icon>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </div>
   </ion-footer>
 
   <script>

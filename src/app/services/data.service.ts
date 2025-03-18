@@ -5,6 +5,7 @@ import data from '../../assets/data/data.json';
 import { Customer } from '../models/customer';
 import { InvoiceItem } from '../models/invoice_item';
 import { Invoice } from '../models/invoice';
+import { Toast } from '@capacitor/toast';
 
 @Injectable({
   providedIn: 'root'
@@ -94,12 +95,14 @@ export class DataService {
 
     // Uncomment to store data in database (Should be when download button is made)
     // Only Store ONCE, because invoiceitems are not unique and will continue storing...
-    
+
     //await this.storage.addCustomers(this.customerList);
     //await this.storage.addInvoices(this.invoiceList);
     //await this.storage.addInvoiceItems(this.invoiceItemList);
+
+    //console.log(this.storage.customerList);
+    //console.log(this.storage.invoiceList);
+    //console.log(this.storage.invoiceItemList);
   }
-
-
 
 }
