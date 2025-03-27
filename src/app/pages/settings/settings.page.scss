@@ -1,0 +1,14 @@
+ion-card {
+    padding: 10px 0px 10px 0px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+}
+
+ion-list {
+    height: 95%;
+}
+
+ion-toggle {
+    --handle-background: #999;         /* color of the knob when OFF */
+    --track-background: #ccc;          /* background bar when OFF */
+  }
